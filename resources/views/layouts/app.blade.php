@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Aplikasi Dokumen Manajer - PT. Indah Jaya Textile Industry</title>
+        
         <link href="{{ asset('/assets/css/style.default.css') }}" rel="stylesheet">
         <link href="{{ asset('/assets/css/style.brown.css') }}" rel="stylesheet">
         @yield('additional_style')

@@ -33,7 +33,8 @@ class CreateSnapTable extends Migration
                   ->onDelete('cascade');
         });
         
-        Schema::create('snap_detail', function (Blueprint $table) {            
+        Schema::create('snap_detail', function (Blueprint $table) {  
+            $table->integer('no');
             $table->time('waktu');
             $table->integer('left');
             $table->decimal('left_snap',10,2);
@@ -46,12 +47,11 @@ class CreateSnapTable extends Migration
             $table->integer('snap_id')->unsigned();
             $table->integer('hapus')->default('1');
             
-            $table->increments('id');
-            
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
             
+            $table->index('no');
             $table->index('waktu');
             $table->index('hapus');
             

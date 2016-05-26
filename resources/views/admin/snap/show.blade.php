@@ -33,7 +33,7 @@
             "lengthMenu": [100, 500, 1000, 1500, 2000 ],
             "ajax":
             {
-                "url"       : "{{ route('mesin.tabel') }}",
+                "url"       : "{{ route('snap.tabel') }}",
                 "type"      : 'POST',
                 "headers"   : {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -42,9 +42,11 @@
             "columns"           :
             [
                 { data    : "action", name: "action", orderable: false, searchable: false},
-                { data    : "mesin_nama", name: "mesin_nama" },
-                { data    : "mesin_nomor", name: "mesin_nomor" },
-                { data    : "mesin_spindle", name: "mesin_spindle" },
+                { data    : "snap_tanggal", name: "snap_tanggal" },
+                { data    : "snap_shift", name: "snap_shift" },
+                { data    : "mesin.mesin_nama", name: "mesin_nama" },
+                { data    : "mesin.mesin_nomor", name: "mesin_nomor" },
+                { data    : "mesin.mesin_spindle", name: "mesin_spindle" },                
                 { data    : "created_at", name: "created_at" }
 
             ],
@@ -118,7 +120,7 @@
         <button data-toggle="dropdown" class="btn dropdown-toggle">Action <span class="caret"></span></button>
         <ul class="dropdown-menu">
             <li>
-                <a href="{{ route('mesin.tambah') }}"><i class="iconfa-plus-sign"></i>&nbsp;Add Snap</a>
+                <a href="{{ route('snap.tambah') }}"><i class="iconfa-plus-sign"></i>&nbsp;Add Snap</a>
             </li>
         </ul>
     </div>
@@ -128,6 +130,7 @@
         {{--*/
         $arrHead = array('&nbsp;',
                          'Date',
+                         'Shift',
                          'Machine Number',
                          'Machine Name',
                          'Spindle',

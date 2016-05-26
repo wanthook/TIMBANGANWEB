@@ -18,4 +18,9 @@ class Snap extends Model
     {
         return $this->belongsTo('App\Mesin');
     }
+    
+    public function snapdetail()
+    {
+        return $this->hasMany('App\Snap');
+    }
 }

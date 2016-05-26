@@ -110,7 +110,7 @@ class MesinController extends Controller
         
         foreach($datas as $data)
         {
-            $ret[] = array('id' => $data['id'], 'text' => $data['mesin_nama']);
+            $ret[] = array('id' => $data['id'], 'text' => $data['mesin_nama'], 'mesin_spindle' => $data['mesin_spindle']);
         }
         
         echo json_encode($ret);

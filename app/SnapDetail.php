@@ -15,8 +15,4 @@ class SnapDetail extends Model
 
     protected $dates = ['created_at','modified_at'];
     
-    public function snap()
-    {
-        return $this->belongsTo('App\Snap');
-    }
 }

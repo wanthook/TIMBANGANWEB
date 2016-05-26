@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CreateSnapRequest;
 use App\Http\Controllers\Controller;
 
-use App\Snap;
+use App\Snap as Snap;
+use App\SnapDetail as SnapDetail;
 use Auth;
 use Yajra\Datatables\Datatables;
 
@@ -33,7 +34,9 @@ class SnapController extends Controller
     
     public function create()
     {
-        return view('admin.snap.create',['menu'=>$this->menu]);
+        $data = new Snap;
+        $data->snap_tanggal = date('Y-m-d');
+        return view('admin.snap.create',compact('data'))->with(['menu'=>$this->menu]);
     }
     
     public function edit($id, Snap $snap)
@@ -46,11 +49,20 @@ class SnapController extends Controller
     public function save(CreateSnapRequest $request, Snap $snap)
     {
         $data   = $request->all();
+                
+//        print_r($data);
         $data['created_by'] = Auth::user()->id;
         $data['updated_by'] = Auth::user()->id;
-        $snap->create($data);
+        $save = $snap->create($data);
         
-        return redirect()->route('snap.tabel');
+        $detail = array();
+        
+        if(!empty($data['waktu']) && is_array($data['waktu']))
+        {
+            
+        }
+        
+//        return redirect()->route('snap.tabel');
     }
     
     public function update($id, Request $request, Snap $snap)
@@ -76,9 +88,9 @@ class SnapController extends Controller
         echo json_encode(array('status' => 1, 'msg' => 'Data berhasil dihapus!!!'));
     }
     
-    public function dataTables(Request $request, Snap $snap)
+    public function dataTables(Request $request)
     {
-        $data   = $snap->where('hapus','1');
+        $data   = Snap::where('hapus','1')->with('mesin')->get();
         
         return  Datatables::of($data)
                 ->addColumn('action',function($data)
