@@ -25,11 +25,6 @@ class HomeController extends Controller
     public function index()
     {
         $menu = $this->parentMenu('dashboard');
-        return view('admin/home',['menu'=>$menu]);
-    }
-    
-    public function dashboard()
-    {
-        return $this->index();
+        return view('/admin/home',['menu'=>$menu]);
     }
 }

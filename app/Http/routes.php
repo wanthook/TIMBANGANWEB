@@ -1,94 +1,67 @@
 <?php
-$ext    = '';
-/*
-|--------------------------------------------------------------------------
-| Routes File
-|--------------------------------------------------------------------------
-|
-| Here is where you will register all of the routes in an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
-
-//Route::get('/', function () {
-//    return view('welcome');
-//});
 
 /*
 |--------------------------------------------------------------------------
 | Application Routes
 |--------------------------------------------------------------------------
 |
-| This route group applies the "web" middleware group to every route
-| it contains. The "web" middleware group is defined in your HTTP
-| kernel and includes session state, CSRF protection, and more.
+| Here is where you can register all of the routes for an application.
+| It's a breeze. Simply tell Laravel the URIs it should respond to
+| and give it the controller to call when that URI is requested.
 |
 */
-
-Route::group(['middleware' => ['web']], function () use ($ext){
+Route::group(['middleware' => ['web']], function (){
     Route::get('/login', ['as' => 'login', 'uses' => 'Auth\AuthController@getLogin']);
+//    Route::get('/fmonitoring', ['as' => 'monitoring', 'uses' => 'Auth\AuthController@getLogin']);
     Route::post('/login', ['as' => 'login', 'uses' => 'Auth\AuthController@postLogin']);
+    Route::get('/oLogin', ['as' => 'oLogin', 'uses' => 'Auth\AuthController@oLogin']);
 });
 
-Route::group(['middleware' => ['web','auth']], function ()  use ($ext){
+Route::group(['middleware' => ['web','auth']], function (){
     
     Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
+    Route::post('changepass', ['as' => 'changepass', 'uses' => 'Auth\AuthController@changepass']);
     Route::get('/', ['as' => 'home.root','uses' => 'HomeController@index']);
-//    Route::get('/', ['as' => '#','uses' => 'HomeController@index']);
-    Route::get('dashboard', ['as' => 'home.dashboard','uses' => 'HomeController@dashboard']);
+    Route::get('home', ['as' => 'home.root','uses' => 'HomeController@index']);
     
-    /*
-     * Route buat user
-     */
-    Route::get('user',                ['as' => 'user.tabel','uses'  => 'UserController@show']);
-    Route::post('user',               ['as' => 'user.tabel','uses'  => 'UserController@dataTables']);
-    Route::get('user/tambah',         ['as' => 'user.tambah','uses' => 'UserController@create']);
-    Route::post('user/tambah',        ['as' => 'user.tambah','uses' => 'UserController@save']);
-    Route::get('user/{id}/ubah',      ['as' => 'user.ubah','uses'   => 'UserController@edit']);
-    Route::patch('user/{id}/ubah',    ['as' => 'user.ubah','uses'   => 'UserController@update']);
-    Route::patch('user/{id}/hapus',   ['as' => 'user.hapus','uses'   => 'UserController@softdelete']);
-    //for select2
-    Route::post('user/selectdua',        ['as' => 'user.selectdua','uses' => 'UserController@selectdua']);
-    Route::post('user/selectduaauthor',        ['as' => 'user.selectduaauthor','uses' => 'UserController@selectduaauthor']);
-     
-    /*
-     * Route buat module
-     */
-    Route::get('module',                ['as' => 'module.tabel','uses'  => 'ModuleController@show']);
-    Route::post('module',               ['as' => 'module.tabel','uses'  => 'ModuleController@dataTables']);
-    Route::get('module/tambah',         ['as' => 'module.tambah','uses' => 'ModuleController@create']);
-    Route::post('module/tambah',        ['as' => 'module.tambah','uses' => 'ModuleController@save']);
-    Route::get('module/{id}/ubah',      ['as' => 'module.ubah','uses'   => 'ModuleController@edit']);
-    Route::patch('module/{id}/ubah',    ['as' => 'module.ubah','uses'   => 'ModuleController@update']);
-    Route::patch('module/{id}/hapus',   ['as' => 'module.hapus','uses'   => 'ModuleController@softdelete']);
-    //for select2
-    Route::post('module/selectdua',        ['as' => 'module.selectdua','uses' => 'ModuleController@selectdua']);
+    Route::get('jenisbarang', ['as' => 'jenisbarang', 'uses' => 'BarangController@index']);
+    Route::get('jenisbarangadd', ['as' => 'jenisbarang.add', 'uses' => 'BarangController@add']);
+    Route::get('jenisbarang/ubah/{id}',    ['as' => 'jenisbarang.ubah','uses'   => 'BarangController@edit']);
+    Route::post('jenisbarangdt', ['as' => 'jenisbarang.tabel','uses'  => 'BarangController@dataTables']);
+    Route::post('jenisbarangsv', ['as' => 'jenisbarang.save','uses'  => 'BarangController@save']);
+    Route::patch('jenisbarang/ubah/{id}',    ['as' => 'jenisbarang.change','uses'   => 'BarangController@change']);
+    Route::patch('jenisbarang/hapus/{id}',   ['as' => 'jenisbarang.hapus','uses'   => 'BarangController@softdelete']);
+    Route::post('jenisbarangsdua',    ['as' => 'jenisbarang.select2','uses'   => 'BarangController@select2']);
     
-    /*
-     * Route buat mesin
-     */
-    Route::get('mesin',                ['as' => 'mesin.tabel','uses'  => 'MesinController@show']);
-    Route::post('mesin',               ['as' => 'mesin.tabel','uses'  => 'MesinController@dataTables']);
-    Route::get('mesin/tambah',         ['as' => 'mesin.tambah','uses' => 'MesinController@create']);
-    Route::post('mesin/tambah',        ['as' => 'mesin.tambah','uses' => 'MesinController@save']);
-    Route::get('mesin/{id}/ubah',      ['as' => 'mesin.ubah','uses'   => 'MesinController@edit']);
-    Route::patch('mesin/{id}/ubah',    ['as' => 'mesin.ubah','uses'   => 'MesinController@update']);
-    Route::patch('mesin/{id}/hapus',   ['as' => 'mesin.hapus','uses'   => 'MesinController@softdelete']);
-    //for select2
-    Route::post('mesin/selectdua',        ['as' => 'mesin.selectdua','uses' => 'MesinController@selectdua']);
+    Route::get('timbangan', ['as' => 'timbangan', 'uses' => 'TimbanganController@index']);
+    Route::get('timbanganadd', ['as' => 'timbangan.add', 'uses' => 'TimbanganController@add']);
+    Route::get('timbanganupload', ['as' => 'timbangan.upload', 'uses' => 'TimbanganController@upload']);
+    Route::get('timbangan/ubah/{id}',    ['as' => 'timbangan.ubah','uses'   => 'TimbanganController@edit']);
+    Route::post('timbangandt', ['as' => 'timbangan.tabel','uses'  => 'TimbanganController@dataTables']);
+    Route::post('timbangansv', ['as' => 'timbangan.save','uses'  => 'TimbanganController@save']);
+    Route::post('timbangandu', ['as' => 'timbangan.doupload','uses'  => 'TimbanganController@doupload']);
+    Route::patch('timbangan/ubah/{id}',    ['as' => 'timbangan.change','uses'   => 'TimbanganController@change']);
+    Route::patch('timbangan/hapus/{id}',   ['as' => 'timbangan.hapus','uses'   => 'TimbanganController@softdelete']);
+    Route::post('timbanganautorelasi',    ['as' => 'timbangan.autorelasi','uses'   => 'TimbanganController@autorelasi']);
+    Route::post('timbanganautonopol',    ['as' => 'timbangan.autonopol','uses'   => 'TimbanganController@autonopol']);
+    Route::post('timbanganautosupir',    ['as' => 'timbangan.autosupir','uses'   => 'TimbanganController@autosupir']);
+    Route::post('timbanganautotiket',    ['as' => 'timbangan.autotiket','uses'   => 'TimbanganController@autotiket']);
     
-    /*
-     * Route buat snap
-     */
-    Route::get('snap',                ['as' => 'snap.tabel','uses'  => 'SnapController@show']);
-    Route::post('snap',               ['as' => 'snap.tabel','uses'  => 'SnapController@dataTables']);
-    Route::get('snap/tambah',         ['as' => 'snap.tambah','uses' => 'SnapController@create']);
-    Route::post('snap/tambah',        ['as' => 'snap.tambah','uses' => 'SnapController@save']);
-    Route::get('snap/{id}/ubah',      ['as' => 'snap.ubah','uses'   => 'SnapController@edit']);
-    Route::patch('snap/{id}/ubah',    ['as' => 'snap.ubah','uses'   => 'SnapController@update']);
-    Route::patch('snap/{id}/hapus',   ['as' => 'snap.hapus','uses'   => 'SnapController@softdelete']);
-    //for select2
-    Route::post('snap/selectdua',        ['as' => 'snap.selectdua','uses' => 'SnapController@selectdua']);
+    Route::get('daftarekspedisi', ['as' => 'daftarekspedisi', 'uses' => 'DaftarekspedisiController@index']);
+    Route::get('daftarekspedisiadd', ['as' => 'daftarekspedisi.add', 'uses' => 'DaftarekspedisiController@add']);
+    Route::get('daftarekspedisi/ubah/{id}',    ['as' => 'daftarekspedisi.ubah','uses'   => 'DaftarekspedisiController@edit']);
+    Route::post('daftarekspedisidt', ['as' => 'daftarekspedisi.tabel','uses'  => 'DaftarekspedisiController@dataTables']);
+    Route::post('daftarekspedisisv', ['as' => 'daftarekspedisi.save','uses'  => 'DaftarekspedisiController@save']);
+    Route::patch('daftarekspedisi/ubah/{id}',    ['as' => 'daftarekspedisi.change','uses'   => 'DaftarekspedisiController@change']);
+    Route::delete('daftarekspedisi/hapus/{id}',   ['as' => 'daftarekspedisi.hapus','uses'   => 'DaftarekspedisiController@softdelete']);
+    
+    Route::get('mutasi/{inout}/{param}', ['as' => 'mutasi', 'uses' => 'MutasiController@index']);
+    Route::get('mutasiadd/{inout}/{param}/{type}', ['as' => 'mutasi.add', 'uses' => 'MutasiController@add']);
+    Route::get('mutasi/ubah/{inout}/{param}/{id}',    ['as' => 'mutasi.ubah','uses'   => 'MutasiController@edit']);
+    Route::post('mutasidt/{inout}/{param}', ['as' => 'mutasi.tabel','uses'  => 'MutasiController@dataTables']);
+    Route::post('mutasisv/{inout}/{param}', ['as' => 'mutasi.save','uses'  => 'MutasiController@save']);
+    Route::patch('mutasi/ubah/{inout}/{param}/{id}',    ['as' => 'mutasi.change','uses'   => 'MutasiController@change']);
+    Route::delete('mutasi/hapus/{inout}/{param}/{id}',   ['as' => 'mutasi.hapus','uses'   => 'MutasiController@softdelete']);
+    Route::post('mutasiautopartai/{inout}/{param}',    ['as' => 'mutasi.autopartai','uses'   => 'MutasiController@autopartai']);
     
 });

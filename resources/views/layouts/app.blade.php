@@ -1,98 +1,82 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Aplikasi Dokumen Manajer - PT. Indah Jaya Textile Industry</title>
-        
-        <link href="{{ asset('/assets/css/style.default.css') }}" rel="stylesheet">
-        <link href="{{ asset('/assets/css/style.brown.css') }}" rel="stylesheet">
-        @yield('additional_style')
-    </head>
-    <body>
-        <div class="mainwrapper">
-    
-            <!-- START HEAD -->
-            <div class="header">
-                <div class="logo">
-                    <a href="{{ url('/home') }}"><img src="{{ asset('/assets/images/logo.png') }}" alt="" /></a>
-                </div>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-                <!-- START HEAD INNER -->
-                <div class="headerinner">
-                    <!-- START HEAD MENU -->
-                    <ul class="headmenu">
-                        <li class="odd"></li>
-                        <li class="right">
-                            <div class="userloggedinfo">
-                                <img src="{{ asset('/assets/images/photos/polos.png') }}" alt="" />
-                                <div class="userinfo">
-                                    <h5>{{{ Auth::user()->name }}} <small>- {{{ Auth::user()->type }}}</small></h5>
-                                    <ul>
-        <!--                                <li><a href="editprofile.html">Edit Profile</a></li>
-                                        <li><a href="">Account Settings</a></li>-->
-                                        <li><a href="{{ route('logout') }}">Sign Out</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul><!-- END HEAD MENU -->
-                </div><!-- END HEAD INNER -->
-            </div><!-- END HEAD-->
-            <!-- START LEFT PANEL -->
-            <div class="leftpanel">
+    <title>Laravel</title>
 
-                <!-- START LEFT MENU -->
-                <div class="leftmenu">        
-                    <ul class="nav nav-tabs nav-stacked">
-                        <li class="nav-header">Navigation</li>
-                        <!--<li><a href="{{ url('/home') }}"><span class="iconfa-laptop"></span> Dashboard</a></li>-->
-                        {!! isset($menu) ? $menu : '' !!}    
-                    </ul>
-                </div><!-- END LEFT MENU -->
-            </div><!-- END LEFT PANEL -->    <!-- START RIGHT PANEL -->
-            <div class="rightpanel">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
 
-                <!-- START NAVIGATOR -->
-                <ul class="breadcrumbs">
-                    @yield('navigator')           
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
+
+    <style>
+        body {
+            font-family: 'Lato';
+        }
+
+        .fa-btn {
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body id="app-layout">
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+
+                <!-- Collapsed Hamburger -->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                    <span class="sr-only">Toggle Navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <!-- Branding Image -->
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    Laravel
+                </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                <!-- Left Side Of Navbar -->
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url('/home') }}">Home</a></li>
                 </ul>
-                <!-- END NAVIGATOR -->
 
-                <!-- START PAGE HEADER -->
-                <div class="pageheader">
-                    @yield('pageheader')
-                </div><!-- END PAGE HEADER -->		
+                <!-- Right Side Of Navbar -->
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Authentication Links -->
+                    @if (Auth::guest())
+                        <li><a href="{{ url('/login') }}">Login</a></li>
+                        <li><a href="{{ url('/register') }}">Register</a></li>
+                    @else
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
 
-                <!-- START MAIN CONTENT -->
-                <div class="maincontent">
-                    <!-- START MAIN CONTAINER -->
-                    <div class="maincontentinner">
-                        @yield('maincontent')
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+                            </ul>
+                        </li>
+                    @endif
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-                        <div class="footer">
-                            <div class="footer-left">
-                                <span>&copy; <?php echo date("Y"); ?>. Aplikasi Dokumen Manajer - PT. Indah Jaya Textile Industry. All Rights Reserved.</span>
-                            </div>
-                            <div class="footer-right">
-                                <span>Created by: Taufiq Hari Widodo (Ext. 383)</span>
-                            </div>
-                        </div><!--footer-->
-                    </div><!-- START MAIN CONTAINER -->
-                </div><!-- END MAINCONTENT -->
+    @yield('content')
 
-            </div><!-- END RIGHT PANEL -->
-
-        </div><!--mainwrapper-->
-        <!-- Latest compiled and minified JQuery -->
-        <!--<script src="{{ asset('/assets/js/jquery-1.9.1.min.js') }}"></script>-->    
-        <script src="{{ asset('/assets/js/jquery-2.2.2.min.js') }}"></script>
-        <script src="{{ asset('/assets/js/jquery-migrate-1.1.1.min.js') }}"></script>
-        <script src="{{ asset('/assets/js/jquery-ui-1.9.2.min.js') }}"></script>
-        <script src="{{ asset('/assets/js/modernizr.min.js') }}"></script>
-        <script src="{{ asset('/assets/js/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('/assets/js/jquery.cookie.js') }}"></script>        
-        <script src="{{ asset('/assets/js/custom.js') }}"></script>
-        <script src="{{ asset('/assets/js/jquery.alerts.js') }}"></script>
-        @stack('additional_js')
-    </body>
+    <!-- JavaScripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+</body>
 </html>

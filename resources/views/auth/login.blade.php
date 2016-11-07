@@ -1,57 +1,59 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Snap - PT. Indah Jaya Textile Industry</title>
-        <link href="{{ asset('/assets/css/style.default.css') }}" rel="stylesheet">
-        <link href="{{ asset('/assets/css/style.brown.css') }}" rel="stylesheet">
-    </head>
-    <body class="loginpage">
-        
-        
-    <div class="loginpanel">
-        <div class="loginpanelinner">
-            <div class="logo animate0 bounceIn"><img src="{{ asset('/assets/images/ijlogo.bmp') }}" alt="" />
-            </div>
-            <form id="login" method="post" action="{{ url('/login') }}">
-                {!! csrf_field() !!}
-                @if (count($errors) > 0)
-                    <!--<div class="login-alert">-->
-                        <div class="alert alert-error">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{$error}}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    <!--</div>-->
-                @endif
-                <div class="inputwrapper animate1 bounceIn">
-                    <input type="text" name="username" id="username" placeholder="Enter your username" />
-                </div>
-                <div class="inputwrapper animate2 bounceIn">
-                    <input type="password" name="password" id="password" placeholder="Enter your password" />
-                </div>
-                <div class="inputwrapper animate3 bounceIn">
-                    <button name="submit">Sign In</button>
-                </div>
+@extends('layouts.sb2')
 
-            </form>
-        </div><!--loginpanelinner-->
-    </div><!--loginpanel-->
-        
-        <div class="loginfooter">
-            <p>&copy; <?php echo date("Y"); ?>. Snap - PT. Indah Jaya Textile Industry. All Rights Reserved.</p>
+@section('additional_style')
+<style>
+body 
+{
+    background: url({{asset('/assets/images/background.jpg')}}) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+</style>
+@endsection
+
+@section('additional_js')
+@endsection
+
+@section('nav_content')
+@endsection
+
+@section('body_content')
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Silakan Login</h3>
+                </div>
+                <div class="panel-body">
+                    {!! Form::open(array('url' => route('login'),'class' => 'stdform')) !!}
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                            </div>
+                            @if (count($errors) > 0)
+                                <div class="alert alert-danger alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{$error}}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            <!-- Change this to a button or input when using this as a form -->
+                            <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
+                            <!--<a class="btn btn-lg btn-success btn-block">Login</a>-->
+                        </fieldset>
+                    {!! Form::close() !!}
+                </div>
+            </div>
         </div>
-        
-        <!-- Latest compiled and minified JQuery -->
-        <script src="{{ asset('/assets/js/jquery-1.9.1.js') }}"></script>
-        
-        <script src="{{ asset('/assets/js/jquery-migrate-1.1.1.min.js') }}"></script>
-        <script src="{{ asset('/assets/js/jquery-ui-1.9.2.min.js') }}"></script>
-        <script src="{{ asset('/assets/js/modernizr.min.js') }}"></script>
-        <script src="{{ asset('/assets/js/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('/assets/js/jquery.cookie.js') }}"></script>
-        <script src="{{ asset('/assets/js/custom.js') }}"></script>
-    </body>
-</html>
+    </div>
+</div>
+@endsection

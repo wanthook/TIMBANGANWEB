@@ -37,31 +37,49 @@ class Controller extends BaseController
             {
                 if($child!="")
                 {
-                    $ret .= '<li class="dropdown active">';
-                    $ret .= '<a href="'.$modul->route.'"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a>';
-                    $ret .= '<ul style="display: block">';
+                    $ret .= '<li>';
+                    $ret .= '<a href="#"><i class="'.$modul->icon.' fa-fw"></i> '.$modul->nama.'<span class="fa arrow"></span></a>';
+                    $ret .= '<ul class="nav nav-second-level">';
                     $ret .= $child;
                     $ret .= '</ul></li>';
                 }
                 else
                 {
-                    $ret .= '<li class="active"><a href="'.route($modul->route).'"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a></li>';
+                    $route = "";
+                    if(!empty($modul->param))
+                    {
+                        $route = route($modul->route,explode('.',$modul->param));
+                    }
+                    else
+                    {
+                        $route = route($modul->route);
+                    }
+                    $ret .= '<li class="active"><a href="'.$route.'"><i class="'.$modul->icon.' fa-fw"></i> '.$modul->nama.'</a></li>';
                 }
             }
             else
             {
                 if($child!="")
                 {
-                    $ret .= '<li class="dropdown">';
-                    $ret .= '<a href="'.$modul->route.'"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a>';
-                    $ret .= '<ul style="display: block">';
+                    $ret .= '<li>';
+                    $ret .= '<a href="#"><i class="'.$modul->icon.' fa-fw"></i> '.$modul->nama.'<span class="fa arrow"></span></a>';
+                    $ret .= '<ul class="nav nav-second-level">';
                     $ret .= $child;
                     $ret .= '</ul></li>';
                     //$ret .= '<li><a href="'.$modul->route.'"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a></li>';
                 }
                 else
                 {
-                    $ret .= '<li><a href="'.route($modul->route).'"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a></li>';
+                    $route = "";
+                    if(!empty($modul->param))
+                    {
+                        $route = route($modul->route,explode('.',$modul->param));
+                    }
+                    else
+                    {
+                        $route = route($modul->route);
+                    }
+                    $ret .= '<li><a href="'.$route.'"><i class="'.$modul->icon.' fa-fw"></i> '.$modul->nama.'</a></li>';
                 }
                 
             }            
@@ -95,14 +113,23 @@ class Controller extends BaseController
                 if($child!="")
                 {
                     $ret .= '<li class="dropdown active">';
-                    $ret .= '<a href="'.$modul->route.'"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a>';
+                    $ret .= '<a href="#"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a>';
                     $ret .= '<ul style="display: block">';
                     $ret .= $child;
                     $ret .= '</ul></li>';
                 }
                 else
                 {
-                    $ret .= '<li class="active"><a href="'.route($modul->route).'"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a></li>';
+                    $route = "";
+                    if(!empty($modul->param))
+                    {
+                        $route = route($modul->route,explode('.',$modul->param));
+                    }
+                    else
+                    {
+                        $route = route($modul->route);
+                    }
+                    $ret .= '<li class="active"><a href="'.$route.'"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a></li>';
                 }
             }
             else
@@ -110,7 +137,7 @@ class Controller extends BaseController
                 if($child!="")
                 {
                     $ret .= '<li class="dropdown">';
-                    $ret .= '<a href="'.$modul->route.'"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a>';
+                    $ret .= '<a href="#"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a>';
                     $ret .= '<ul style="display: block">';
                     $ret .= $child;
                     $ret .= '</ul></li>';
@@ -118,7 +145,16 @@ class Controller extends BaseController
                 }
                 else
                 {
-                    $ret .= '<li><a href="'.route($modul->route).'"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a></li>';
+                    $route = "";
+                    if(!empty($modul->param))
+                    {
+                        $route = route($modul->route,explode('.',$modul->param));
+                    }
+                    else
+                    {
+                        $route = route($modul->route);
+                    }
+                    $ret .= '<li><a href="'.$route.'"><span class="'.$modul->icon.'"></span> '.$modul->nama.'</a></li>';
                 }
                 
             }            
