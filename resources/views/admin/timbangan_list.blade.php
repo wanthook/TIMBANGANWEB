@@ -76,26 +76,27 @@
                 ],
                 "drawCallback": function( settings, json ) 
                 {
-                    $('.deleterow').on('click',function(e){
+                    $('.deleterow,.resetrow').on('click',function(e){
                         e.preventDefault();
                         var _this	= jQuery(this);
-                        if(confirm('Apakah Anda yakin menghapus data ini?'))
+                        if(confirm('Apakah Anda yakin menghapus/reset data ini?'))
                         {
                             var url = jQuery(this).attr('href');
                             $.ajax({
                                 url: url,
                                 type: 'POST',
                                 dataType: 'json',
-                                data: {_method: 'PATCH'}
-                            }).success(function (data) {
-                                if(data.status==1)
+                                data: {_method: 'PATCH'},
+                                success : function (data, textStatus, jqXHR) 
                                 {
-                                    _this.parents('tr').fadeOut(function(){
-                                        _this.remove();
-                                    });
-                               }
-                               else
-                               {
+                                    if(data.status==1)
+                                    {
+                                        $('#ajaxMsg').append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+data.msg+'</div>');
+                                    }
+                                    else
+                                    {
+                                        $('#ajaxMsg').append('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+data.msg+'</div>');
+                                    }
                                 }
                             });
                         }
@@ -152,6 +153,7 @@
 @endsection
 
 @section('alert_content')
+<div id="ajaxMsg"></div>
 @if(session('msg'))
     <div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>

@@ -265,6 +265,24 @@
                                     {!! $errors->first('po','<span class="help-block">:message</span>') !!}
                                 </div>
                             </div>
+                            <div class="form-group{{ $errors->has('timbang_in')?' has-error':'' }}">
+                                <label for="timbang_in" class="col-sm-2 control-label">Timbang Masuk *</label>
+                                <div class="col-xs-4">
+                                    <div class="input-group">
+                                        {!! Form::text('timbang_in',null,['class' => 'form-control', 'id' => 'timbang_in', 'placeholder' => 'Timbang Masuk']) !!}
+                                        
+                                    </div>
+                                    {!! $errors->first('timbang_in','<span class="help-block">:message</span>') !!}
+                                </div>
+                                <label for="timbang_out" class="col-sm-2 control-label">Timbang Keluar *</label>
+                                <div class="col-xs-4">
+                                    <div class="input-group">
+                                        {!! Form::text('timbang_out',null,['class' => 'form-control', 'id' => 'timbang_out', 'placeholder' => 'Timbang Keluar']) !!}
+                                        
+                                    </div>
+                                    {!! $errors->first('timbang_out','<span class="help-block">:message</span>') !!}
+                                </div>
+                            </div>
                             <div class="form-group{{ $errors->has('catatan')?' has-error':'' }}">
                                 <label for="catatan" class="col-sm-2 control-label">Catatan</label>
                                 <div class="col-xs-10">

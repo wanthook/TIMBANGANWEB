@@ -42,6 +42,7 @@ Route::group(['middleware' => ['web','auth']], function (){
     Route::post('timbangandu', ['as' => 'timbangan.doupload','uses'  => 'TimbanganController@doupload']);
     Route::patch('timbangan/ubah/{id}',    ['as' => 'timbangan.change','uses'   => 'TimbanganController@change']);
     Route::patch('timbangan/hapus/{id}',   ['as' => 'timbangan.hapus','uses'   => 'TimbanganController@softdelete']);
+    Route::patch('timbangan/reset/{id}',   ['as' => 'timbangan.reset','uses'   => 'TimbanganController@reset']);
     Route::post('timbanganautorelasi',    ['as' => 'timbangan.autorelasi','uses'   => 'TimbanganController@autorelasi']);
     Route::post('timbanganautonopol',    ['as' => 'timbangan.autonopol','uses'   => 'TimbanganController@autonopol']);
     Route::post('timbanganautosupir',    ['as' => 'timbangan.autosupir','uses'   => 'TimbanganController@autosupir']);

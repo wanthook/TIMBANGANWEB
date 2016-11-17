@@ -83,10 +83,10 @@ class TimbanganController extends Controller
         }
         
         $data['tiket']   = $this->generateTicket($data['id_barang']);
-        $data['type']    = $edit->type;
-        $data['print']   = $edit->print;
-        $data['timbang_in']    = $edit->timbang_in;
-        $data['timbang_out']    = $edit->timbang_out;       
+        //$data['type']    = $edit->type;
+        //$data['print']   = $edit->print;
+        //$data['timbang_in']    = $edit->timbang_in;
+        //$data['timbang_out']    = $edit->timbang_out;       
         
         $data['created_by'] = Auth::user()->id;
         $data['modified_by'] = Auth::user()->id;
@@ -131,8 +131,8 @@ class TimbanganController extends Controller
            $data['print']   = $edit->print;
            $data['timbang_in']    = $edit->timbang_in;
            $data['timbang_out']    = $edit->timbang_out;
-           $data['created_by'] = Auth::user()->id;
-           $data['create_date'] = Carbon::now();
+           $data['created_by'] = $edit->created_by;
+           $data['create_date'] = $edit->create_date;
            
            $del['hapus']    = '0';
            $del['alasan']   = 'Tiket berubah, dari '.$edit->tiket.' menjadi '.$data['tiket'];
@@ -141,6 +141,8 @@ class TimbanganController extends Controller
         
            $edit->fill($del)->save();
 //           print_r($data);
+           $data['modified_by'] = Auth::user()->id;
+           $data['modify_date'] = Carbon::now();
            Timbangan::create($data);
         
             return redirect()->route('timbangan')->with('msg','Tiket berubah, dari '.$edit->tiket.' menjadi '.$data['tiket']);
@@ -184,10 +186,10 @@ class TimbanganController extends Controller
                     ['tanggal_keluar','=',$bla[$i]['tanggal_keluar']],
                     ['jam_masuk','=',$bla[$i]['jam_masuk']],
                     ['jam_keluar','=',$bla[$i]['jam_keluar']],
-                    ['no_pol','=',$bla[$i]['no_pol']],
-                    ['relasi','=',$bla[$i]['relasi']],
-                    ['timbang_in','=',$bla[$i]['kode_timbangan_masuk']],
-                    ['timbang_out','=',$bla[$i]['kode_timbangan_keluar']]
+                    ['no_pol','=',  strtoupper($bla[$i]['no_pol'])],
+                    ['relasi','=',strtoupper($bla[$i]['relasi'])],
+                    ['timbang_in','=',strtoupper($bla[$i]['kode_timbangan_masuk'])],
+                    ['timbang_out','=',strtoupper($bla[$i]['kode_timbangan_keluar'])]
                 ])->count();
 //                echo $i." - ".$cek."<br>";
                 if($cek>0)
@@ -195,33 +197,40 @@ class TimbanganController extends Controller
                     continue;
                 }
                 
-                $barang = Barang::where('kode',$bla[$i]['kode_barang'])->first();
+                $barangs = Barang::where('kode',$bla[$i]['kode_barang']);
+                if($barangs->count()<1)
+                {
+                    continue;
+                }
+                $barang = $barangs->first();
+//                if(barang->count())
                 
                 $print = 0;
                 if(!empty($bla[$i]['tanggal_masuk']) && !empty($bla[$i]['tanggal_keluar']))
                 {
                     $print = 1;
                 }
-                
+//                echo $barang->id_barang." - ";
+                $tik = $this->generateTicket($barang->id_barang);
                 
                 $filedata = array(
                     "tanggal_masuk"     => $bla[$i]['tanggal_masuk'],
                     "tanggal_keluar"    => $bla[$i]['tanggal_keluar'],
-                    "tiket"             => $this->generateTicket($barang->id_barang),
-                    "no_pol"            => $bla[$i]['no_pol'],
-                    "relasi"            => $bla[$i]['relasi'],
+                    "tiket"             => $tik,
+                    "no_pol"            => strtoupper($bla[$i]['no_pol']),
+                    "relasi"            => strtoupper($bla[$i]['relasi']),
                     "id_barang"         => $barang->id_barang,
-                    "nama_supir"        => $bla[$i]['nama_supir'],
+                    "nama_supir"        => strtoupper($bla[$i]['nama_supir']),
                     "berat_gross"       => $bla[$i]['berat_gross'],
                     "berat_tara"        => $bla[$i]['berat_tara'],
                     "berat_netto"       => $bla[$i]['berat_netto'],
                     "jam_masuk"         => $bla[$i]['jam_masuk'],
                     "jam_keluar"        => $bla[$i]['jam_keluar'],
-                    "catatan"           => $bla[$i]['catatan'],
+                    "catatan"           => strtoupper($bla[$i]['catatan']),
                     "print"             => $print,
-                    "sj"                => $bla[$i]['sj'],
-                    "po"                => $bla[$i]['po'],
-                    "type"              => $bla[$i]['kode_tipe'],
+                    "sj"                => strtoupper($bla[$i]['sj']),
+                    "po"                => strtoupper($bla[$i]['po']),
+                    "type"              => strtoupper($bla[$i]['kode_tipe']),
                     "alasan"            => 'SYSTEM UPLOAD',
                     "created_by"        => Auth::user()->id,
                     "create_date"       => Carbon::now(),
@@ -249,9 +258,9 @@ class TimbanganController extends Controller
         return redirect()->route('timbangan')->with('msg','Tidak ada data yang dimasukkan');
     }
     
-    public function softdelete($id, CreateTimbanganRequest $request)
+    public function softdelete($id, Request $request)
     {
-        $edit    = Timbangan::where('id_timbangan',$id)->first();
+        $edit    = Timbangan::where('timbangan_id',$id)->first();
         
         $data    = $request->all();
         
@@ -262,6 +271,50 @@ class TimbanganController extends Controller
         $edit->fill($data)->save();
         
         echo json_encode(array('status' => 1, 'msg' => 'Data berhasil dihapus!!!'));
+    }
+    
+    public function reset($id, Request $request)
+    {
+        $edits    = Timbangan::where('timbangan_id',$id)->where('print',1)->where('hapus',1);
+        
+        $data    = $request->all();
+        
+        if($edits->count()<1)
+        {
+            echo json_encode(array('status' => 0, 'msg' => 'Data Tidak Ada!!!'));
+        }
+        else
+        {
+            $edit = $edits->first();
+            
+            $data['berat_tara']     = null;
+            $data['berat_netto']    = null;
+            $data['tanggal_keluar'] = null;
+            $data['jam_keluar']     = null;
+            $data['print']          = 0;
+            $data['type']           = null;
+            $data['timbang_out']    = null;
+            $data['modified_by'] = Auth::user()->id;
+            $data['modify_date'] = Carbon::now();
+            
+            if($edit->type=='IN')
+            {
+                $data['berat_gross'] = $edit->berat_gross;
+                $edit->fill($data)->save();
+                echo json_encode(array('status' => 1, 'msg' => 'Data berhasil direset!!!'));
+            }
+            else if($edit->type=='OUT')
+            {
+                $data['berat_gross'] = $edit->berat_tara;
+                $edit->fill($data)->save();
+                echo json_encode(array('status' => 1, 'msg' => 'Data berhasil direset!!!'));
+            }
+            else
+            {
+                echo json_encode(array('status' => 0, 'msg' => 'Tipe barang tidak diketahui, reset gagal.!!!'));
+            }
+            
+        }
     }
     
     public function dataTables(Request $request)
@@ -307,11 +360,15 @@ class TimbanganController extends Controller
         }
         
         $datas->orderBy('timbangan_id','desc');
-//        var_dump($datas);
+        
         return  Datatables::of($datas)
                 ->addColumn('action',function($datas)
                 {
                     $str  = '<a href="'.route("timbangan.ubah",$datas->timbangan_id).'" class="editrow btn btn-default"><i class="fa fa-edit"></i></a>&nbsp;';
+                    if($datas->print == '1')
+                    {
+                        $str .= '<a href="'.route("timbangan.reset",$datas->timbangan_id).'" class="resetrow btn btn-default"><i class="fa fa-refresh"></i></a>&nbsp;';
+                    }
                     $str .= '<a href="'.route("timbangan.hapus",$datas->timbangan_id).'" class="deleterow btn btn-default"><i class="fa fa-minus-circle"></i></a>&nbsp;';
                     return $str;
                 })
