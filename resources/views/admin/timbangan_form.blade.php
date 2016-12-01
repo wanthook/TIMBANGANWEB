@@ -78,7 +78,7 @@
             var beratgross = $('#berat_gross').val();
             var berattara  = $('#berat_tara').val();
             
-            if(beratgross!="" || berattara!="")
+            if(beratgross!="" && berattara!="")
             {
                 beratgross = parseInt(beratgross);
                 berattara  = parseInt(berattara);

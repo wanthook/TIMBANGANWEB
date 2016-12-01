@@ -172,11 +172,9 @@ class TimbanganController extends Controller
             
             $bla = Excel::load(storage_path('uploads/excel/').$filename, function($reader)
             {
-//                $reader->ignoreEmpty();
                 $reader->skip(1);
-//            })->get();    
             })->get()->toArray()[0];
-//            print_r($bla);
+            
             $filedata = array();
             
             for($i = 0 ; $i<count($bla) ; $i++)
@@ -191,7 +189,7 @@ class TimbanganController extends Controller
                     ['timbang_in','=',strtoupper($bla[$i]['kode_timbangan_masuk'])],
                     ['timbang_out','=',strtoupper($bla[$i]['kode_timbangan_keluar'])]
                 ])->count();
-//                echo $i." - ".$cek."<br>";
+                
                 if($cek>0)
                 {
                     continue;
@@ -200,11 +198,11 @@ class TimbanganController extends Controller
                 $barangs = Barang::where('kode',$bla[$i]['kode_barang']);
                 if($barangs->count()<1)
                 {
+                  echo $bla[$i]['kode_barang'];
                     continue;
                 }
                 $barang = $barangs->first();
-//                if(barang->count())
-                
+                                
                 $print = 0;
                 if(!empty($bla[$i]['tanggal_masuk']) && !empty($bla[$i]['tanggal_keluar']))
                 {
@@ -240,20 +238,9 @@ class TimbanganController extends Controller
                     "timbang_out"       => $bla[$i]['kode_timbangan_keluar']
                 ); 
                 Timbangan::create($filedata);
-//                Timbangan::insert($filedata);
             }
             return redirect()->route('timbangan')->with('msg','Data berhasil disimpan.');
             
-//            if(count($filedata)>0)
-//            {
-//                print_r($filedata);
-//                Timbangan::insert($filedata);
-//                return redirect()->route('timbangan')->with('msg','Data berhasil disimpan.');
-//            }
-//            else
-//            {
-//                return redirect()->route('timbangan')->with('msg','Tidak ada data yang dimasukkan');
-//            }
         }
         return redirect()->route('timbangan')->with('msg','Tidak ada data yang dimasukkan');
     }

@@ -15,23 +15,28 @@ Route::group(['middleware' => ['web']], function (){
 //    Route::get('/fmonitoring', ['as' => 'monitoring', 'uses' => 'Auth\AuthController@getLogin']);
     Route::post('/login', ['as' => 'login', 'uses' => 'Auth\AuthController@postLogin']);
     Route::get('/oLogin', ['as' => 'oLogin', 'uses' => 'Auth\AuthController@oLogin']);
+    Route::get('monitoring', ['as' => 'monitoring','uses' => 'MonitoringController@index']);
+    Route::post('jenisbarangdashboard',    ['as' => 'jenisbarang.selectdashboard','uses'   => 'MonitoringController@selectJenisBarang']);
+    Route::post('timbangandtdashboard', ['as' => 'timbangan.dashboard','uses'  => 'MonitoringController@dataTablesTimbangan']);
 });
 
 Route::group(['middleware' => ['web','auth']], function (){
     
     Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
     Route::post('changepass', ['as' => 'changepass', 'uses' => 'Auth\AuthController@changepass']);
-    Route::get('/', ['as' => 'home.root','uses' => 'HomeController@index']);
+    Route::get('dashboard', ['as' => 'home.root','uses' => 'HomeController@index']);
     Route::get('home', ['as' => 'home.root','uses' => 'HomeController@index']);
+    Route::get('/', ['as' => 'home.root','uses' => 'HomeController@index']);
     
     Route::get('jenisbarang', ['as' => 'jenisbarang', 'uses' => 'BarangController@index']);
     Route::get('jenisbarangadd', ['as' => 'jenisbarang.add', 'uses' => 'BarangController@add']);
     Route::get('jenisbarang/ubah/{id}',    ['as' => 'jenisbarang.ubah','uses'   => 'BarangController@edit']);
+    Route::post('jenisbarangsdua',    ['as' => 'jenisbarang.select2','uses'   => 'BarangController@select2']);
     Route::post('jenisbarangdt', ['as' => 'jenisbarang.tabel','uses'  => 'BarangController@dataTables']);
     Route::post('jenisbarangsv', ['as' => 'jenisbarang.save','uses'  => 'BarangController@save']);
     Route::patch('jenisbarang/ubah/{id}',    ['as' => 'jenisbarang.change','uses'   => 'BarangController@change']);
     Route::patch('jenisbarang/hapus/{id}',   ['as' => 'jenisbarang.hapus','uses'   => 'BarangController@softdelete']);
-    Route::post('jenisbarangsdua',    ['as' => 'jenisbarang.select2','uses'   => 'BarangController@select2']);
+    
     
     Route::get('timbangan', ['as' => 'timbangan', 'uses' => 'TimbanganController@index']);
     Route::get('timbanganadd', ['as' => 'timbangan.add', 'uses' => 'TimbanganController@add']);
